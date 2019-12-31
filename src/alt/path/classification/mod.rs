@@ -4,7 +4,7 @@ use self::regex::Regex;
 
 pub fn is_test_file(path: &str) -> bool {
     lazy_static! {
-        static ref RE: Regex = Regex::new(r"^(features/step_definitions/|test/|spec/|tests/|src/test/|src/intTest/|\w*Tests/)").unwrap();
+        static ref RE: Regex = Regex::new(r"^(\w*/)?(features/step_definitions/|test/|spec/|tests/|src/test/|src/intTest/|\w*Tests/)").unwrap();
     }
     RE.is_match(path)
 }
