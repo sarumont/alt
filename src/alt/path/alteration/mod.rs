@@ -4,7 +4,7 @@ use self::regex::Regex;
 
 pub fn strip_test_words(filename: &str) -> &str {
     lazy_static! {
-        static ref RE: Regex = Regex::new(r"(test_)?(?P<p>\w+?)(_rake_spec|_spec|_rake_test|_test|_steps|.test|Tests|UITests|Specs|UISpecs|Test|Spec|Suite)?(\.\w+)?$").unwrap();
+        static ref RE: Regex = Regex::new(r"(test_)?(?P<p>\w+?)(_rake_spec|_spec|_rake_test|_test|_steps|.test|Tests|UITests|Specs|UISpecs|Test|IT|Spec|Suite)?(\.\w+)?$").unwrap();
     }
     RE.captures(filename).and_then(|caps| caps.name("p")).map(|m| m.as_str()).unwrap_or(filename)
 }
@@ -126,6 +126,12 @@ mod tests {
     #[test]
     fn strip_test_words_returns_filename_with_junit_test_words_stripped() {
         let s = String::from("SomethingTest.java");
+        assert_eq!(strip_test_words(&s), "Something");
+    }
+
+    #[test]
+    fn strip_test_words_returns_filename_with_integration_test_words_stripped() {
+        let s = String::from("SomethingIT.java");
         assert_eq!(strip_test_words(&s), "Something");
     }
 

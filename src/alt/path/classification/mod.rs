@@ -4,7 +4,7 @@ use self::regex::Regex;
 
 pub fn is_test_file(path: &str) -> bool {
     lazy_static! {
-        static ref RE: Regex = Regex::new(r"^(features/step_definitions/|test/|spec/|tests/|src/test/|\w*Tests/)").unwrap();
+        static ref RE: Regex = Regex::new(r"^(features/step_definitions/|test/|spec/|tests/|src/test/|src/intTest/|\w*Tests/)").unwrap();
     }
     RE.is_match(path)
 }
@@ -366,6 +366,12 @@ mod tests {
     #[test]
     fn is_test_file_detects_java_maven_junit_test_files() {
         let s = String::from("src/test/java/com/example/SomethingTest.java");
+        assert_eq!(is_test_file(&s), true);
+    }
+
+    #[test]
+    fn is_test_file_detects_java_integration_test_files() {
+        let s = String::from("src/intTest/java/com/example/SomethingIT.java");
         assert_eq!(is_test_file(&s), true);
     }
 
